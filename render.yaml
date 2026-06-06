@@ -7,6 +7,9 @@ services:
     envVars:
       - key: DATABASE_URL
         sync: false
+        # Must be JDBC format: jdbc:postgresql://host/dbname?sslmode=require
+        # Neon provides: postgresql://user:pass@host/db — DO NOT use that format directly.
+        # Correct value example: jdbc:postgresql://ep-xxx.us-east-2.aws.neon.tech/crmdb?sslmode=require
       - key: DATABASE_USERNAME
         sync: false
       - key: DATABASE_PASSWORD
