@@ -28,18 +28,29 @@ public class BootstrapAdminRunner implements CommandLineRunner {
             log.warn("Bootstrap admin is enabled but email/password are not set.");
             return;
         }
-        if (userRepository.existsByRole(Role.ADMIN)) {
-            return;
-        }
 
-        User admin = User.builder()
-                .email(properties.getEmail().toLowerCase())
-                .fullName(properties.getFullName())
-                .password(passwordEncoder.encode(properties.getPassword()))
-                .role(Role.ADMIN)
-                .enabled(true)
-                .build();
-        userRepository.save(admin);
-        log.info("Bootstrap admin user created.");
+        String email = properties.getEmail().toLowerCase();
+        String rawPassword = properties.getPassword();
+
+        userRepository.findByEmail(email).ifPresentOrElse(existing -> {
+            if (!passwordEncoder.matches(rawPassword, existing.getPassword())) {
+                existing.setPassword(passwordEncoder.encode(rawPassword));
+                existing.setEnabled(true);
+                userRepository.save(existing);
+                log.info("Bootstrap admin password re-synced for email={}", email);
+            } else {
+                log.info("Bootstrap admin already up-to-date for email={}", email);
+            }
+        }, () -> {
+            User admin = User.builder()
+                    .email(email)
+                    .fullName(properties.getFullName())
+                    .password(passwordEncoder.encode(rawPassword))
+                    .role(Role.ADMIN)
+                    .enabled(true)
+                    .build();
+            userRepository.save(admin);
+            log.info("Bootstrap admin user created for email={}", email);
+        });
     }
 }

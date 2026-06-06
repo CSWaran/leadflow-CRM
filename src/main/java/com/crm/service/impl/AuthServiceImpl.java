@@ -35,13 +35,11 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            email,
-                            request.getPassword()
-                    )
+                    new UsernamePasswordAuthenticationToken(email, request.getPassword())
             );
         } catch (AuthenticationException ex) {
-            log.warn("Authentication exception {}: {}", ex.getClass().getSimpleName(), ex.getMessage());
+            log.warn("Authentication failed for email={} reason={} ({})",
+                    email, ex.getMessage(), ex.getClass().getSimpleName());
             throw ex;
         }
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
