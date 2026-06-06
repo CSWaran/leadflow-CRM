@@ -62,7 +62,8 @@ public class SecurityConfig {
         List<String> origins = new java.util.ArrayList<>(List.of(
                 "http://localhost:3000",
                 "http://localhost:5173",
-                "http://localhost:8080"
+                "http://localhost:8080",
+                "https://leadflow-crm-frontend.onrender.com"
         ));
         String frontendUrl = System.getenv("FRONTEND_URL");
         if (frontendUrl != null && !frontendUrl.isBlank()) {
@@ -70,7 +71,7 @@ public class SecurityConfig {
         }
         configuration.setAllowedOrigins(origins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
