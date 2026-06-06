@@ -25,10 +25,11 @@ public class LoggingAuthenticationProvider extends DaoAuthenticationProvider {
         Object credentials = authentication.getCredentials();
         String rawPassword = credentials == null ? null : credentials.toString();
         boolean matches = rawPassword != null && getPasswordEncoder().matches(rawPassword, storedHash);
-        log.debug("AuthenticationProvider user={} storedHash={} bcryptMatches={}",
+        log.warn("[AuthProvider] user={} enabled={} bcryptMatches={} storedHash={}",
                 userDetails.getUsername(),
-                storedHash,
-                matches);
+                userDetails.isEnabled(),
+                matches,
+                storedHash);
         super.additionalAuthenticationChecks(userDetails, authentication);
     }
 }

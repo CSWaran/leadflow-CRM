@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    private static final org.slf4j.Logger log =
+            org.slf4j.LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
+
     private final ObjectMapper objectMapper;
 
     @Override
@@ -23,6 +26,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException
     ) throws IOException {
+        log.warn("[AuthEntryPoint] 401 uri={} cause={} ({})",
+                request.getRequestURI(),
+                authException.getMessage(),
+                authException.getClass().getSimpleName());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getWriter(), ApiResponse.failure("Unauthorized"));
