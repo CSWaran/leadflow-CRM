@@ -16,6 +16,7 @@ httpClient.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`
   }
 
+  console.log('[http] Request:', config.method?.toUpperCase(), config.baseURL + config.url)
   return config
 })
 
