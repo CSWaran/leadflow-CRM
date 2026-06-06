@@ -1,4 +1,8 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1'
+const _apiUrl = import.meta.env.VITE_API_URL
+if (!_apiUrl) {
+  console.error('[config] VITE_API_URL is not set — falling back to localhost. Login will fail in production.')
+}
+export const API_BASE_URL = _apiUrl ?? 'http://localhost:8080/api/v1'
 
 export const STORAGE_KEYS = {
   token: 'crm_access_token',
