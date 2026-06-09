@@ -31,4 +31,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://leadflow-crm-y06k.onrender.com/api/v1
+        value: https://leadflow-crm-y06k.onrender.com/api/v1/
